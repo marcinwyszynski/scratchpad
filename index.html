@@ -1,71 +1,11 @@
 <!DOCTYPE html>
-<html manifest='scratchpad.appcache'>
+<html manifest="application.manifest">
   <head>
-    <style>
-      body, html {
-        margin: 0px;
-        height: 100%;
-      }
-      #scratchpad {
-        box-sizing: border-box;
-        tab-size: 2;
-        border: 0px none;
-        outline: none;
-        padding: 3px;
-        width: 100%;
-        height: 99%;
-        resize: none;
-        font-family: monospace;
-      }
-    </style>
-    <script>
-      (function() {
-        Date.prototype.toHash = function() {
-          var month = '' + (this.getMonth() + 1);
-          var day = '' + this.getUTCDate();
-          if (month.length == 1) month = '0' + month;
-          if (day.length == 1) month = '0' + day;
-          return [this.getFullYear(), month, day].join('-');
-        };
-        var key;
-        function setUp() {
-          var url = window.location.href.split('#');
-          key = url.length == 1 ? new Date().toHash() : url[1];
-          window.document.title = key + ' | Scratchpad';
-          var scratchpad = document.getElementById('scratchpad');
-          scratchpad.value = localStorage[key] || '';
-          scratchpad.focus();
-          return scratchpad;
-        }
-        window.addEventListener('load', function() {
-          // Read the key parameter from the URL. If one is not provided,
-          // default to current date, formatted as defined above. This
-          // is purely for human consumption use.
-          var scratchpad = setUp();
-          window.history.replaceState(null, null, '#' + key);
-          scratchpad.addEventListener('keyup', function() {
-            localStorage[key] = scratchpad.value;
-          });
-          // Emulate actual text editor behavior - you're always editing.
-          scratchpad.addEventListener('blur', function() {
-            scratchpad.focus();
-          });
-          // 'Tab' key adds two spaces instead of removing focus.
-          // The use of fake input preserves native broser undo/redo stack.
-          scratchpad.addEventListener('keydown', function(evt) {
-            if (evt.keyCode == 9) {
-              evt.preventDefault();
-              var tabEvent = document.createEvent('TextEvent');
-              tabEvent.initTextEvent('textInput', true, true, null, '\t');
-              scratchpad.dispatchEvent(tabEvent);
-            }
-          });
-        });
-        window.addEventListener('hashchange', setUp);
-      })();
-    </script>
+    <script src="assets/codemirror.js"></script>
+    <script src="assets/application.js"></script>
+    <link rel="stylesheet" href="assets/codemirror.css" />
+    <link rel="stylesheet" href="assets/application.css" />
   </head>
   <body>
-    <textarea id="scratchpad"></textarea>
   </body>
 </html>
