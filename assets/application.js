@@ -33,11 +33,11 @@
       localStorage[documentKey] = editor.getValue();
     });
   });
-
+  
   // When the hash is changed, pull and display the corresponding data.
   window.addEventListener('hashchange', function() {
     getDocumentKeyFromUrl();
-    editor.setValue(localStorage[documentKey]);
+    editor.setValue(localStorage[documentKey] || '');
   });
 
 })();
