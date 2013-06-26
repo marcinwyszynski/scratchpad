@@ -8,3 +8,5 @@ assets/application.js
 assets/codemirror.css
 assets/codemirror.js
 assets/favicon.ico
+assets/filesaver.min.js
+assets/mousetrap.min.js

@@ -47,5 +47,17 @@
     getDocumentKeyFromUrl();
     editor.setValue(localStorage[documentKey] || '');
   });
+  
+  // Support for saving files.
+  Mousetrap.bind('mod+s', function(evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    var keyParts = documentKey.split('.');
+    var extension = keyParts.length == 2 ? keyParts[1] : 'txt';
+    var blob = new Blob([editor.getValue()], {
+      type: 'text/plain;charset=utf-8'
+    });
+    saveAs(blob, [documentKey, extension].join('.'));
+  });
 
 })();
