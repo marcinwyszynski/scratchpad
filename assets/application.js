@@ -1,5 +1,8 @@
 (function() {
 
+  // Check if we're on a Mac. They have different bindings.
+  var isAMac = navigator.userAgent.indexOf('OS X') != -1;
+
   // Turn a date element into a string formatted like YYYY-MM-DD.
   var dateToHash = function(date) {
     var month = '' + (date.getMonth() + 1);
@@ -21,6 +24,15 @@
     if (urlElements.length == 2) documentKey = urlElements[1];
     window.document.title = documentKey + ' | Scratchpad';
   };
+  
+  var saveAsFile = function() {
+    var keyParts = documentKey.split('.');
+    var extension = keyParts.length == 2 ? keyParts[1] : 'txt';
+    var blob = new Blob([editor.getValue()], {
+      type: 'text/plain;charset=utf-8'
+    });
+    saveAs(blob, [documentKey, extension].join('.'));
+  };
 
   // Fiat lux.
   window.addEventListener('load', function() {
@@ -30,10 +42,12 @@
     window.history.replaceState(null, null, '#' + documentKey);
 
     // Set up the editor.
+    var saveKey = isAMac ? 'Cmd-S' : 'Ctrl-S';
     editor = CodeMirror(document.body, {
       lineNumbers: true,
       lineWrapping: true,
       value: localStorage[documentKey] || '',
+      extraKeys: { saveKey: saveAsFile }
     });
 
     // Save changes as they happen in the editor to the local storage.
@@ -52,12 +66,7 @@
   Mousetrap.bind('mod+s', function(evt) {
     evt.preventDefault();
     evt.stopPropagation();
-    var keyParts = documentKey.split('.');
-    var extension = keyParts.length == 2 ? keyParts[1] : 'txt';
-    var blob = new Blob([editor.getValue()], {
-      type: 'text/plain;charset=utf-8'
-    });
-    saveAs(blob, [documentKey, extension].join('.'));
+    saveAsFile();
   });
 
 })();
