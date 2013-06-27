@@ -20,7 +20,10 @@
     if (urlElements.length == 2) documentKey = urlElements[1];
     window.document.title = documentKey + ' | Scratchpad';
   };
-  
+
+  // Save editor content to a file using the filesaver.js cross-browser API.
+  // If the document key has what looks like an extension, use it. Otherwise
+  // default to '.txt'.
   var saveToFile = function() {
     var keyParts = documentKey.split('.');
     var extension = keyParts.length == 2 ? keyParts[1] : 'txt';
