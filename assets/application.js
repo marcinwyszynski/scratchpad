@@ -1,8 +1,4 @@
 (function() {
-
-  // Check if we're on a Mac. They have different bindings.
-  var isAMac = navigator.userAgent.indexOf('OS X') != -1;
-
   // Turn a date element into a string formatted like YYYY-MM-DD.
   var dateToHash = function(date) {
     var month = '' + (date.getMonth() + 1);
@@ -42,7 +38,6 @@
     window.history.replaceState(null, null, '#' + documentKey);
 
     // Set up the editor.
-    var saveKey = isAMac ? 'Cmd-S' : 'Ctrl-S';
     editor = CodeMirror(document.body, {
       lineNumbers: true,
       lineWrapping: true,
