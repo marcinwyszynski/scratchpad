@@ -25,7 +25,7 @@
     window.document.title = documentKey + ' | Scratchpad';
   };
   
-  var saveAsFile = function() {
+  var saveToFile = function() {
     var keyParts = documentKey.split('.');
     var extension = keyParts.length == 2 ? keyParts[1] : 'txt';
     var blob = new Blob([editor.getValue()], {
@@ -46,27 +46,20 @@
     editor = CodeMirror(document.body, {
       lineNumbers: true,
       lineWrapping: true,
-      value: localStorage[documentKey] || '',
-      extraKeys: { saveKey: saveAsFile }
+      value: localStorage[documentKey] || ''
     });
 
     // Save changes as they happen in the editor to the local storage.
     editor.on('change', function() {
       localStorage[documentKey] = editor.getValue();
     });
+    document.querySelector('#saveToFile').addEventListener('click', saveToFile);
   });
 
   // When the hash is changed, pull and display the corresponding data.
   window.addEventListener('hashchange', function() {
     getDocumentKeyFromUrl();
     editor.setValue(localStorage[documentKey] || '');
-  });
-  
-  // Support for saving files.
-  Mousetrap.bind('mod+s', function(evt) {
-    evt.preventDefault();
-    evt.stopPropagation();
-    saveAsFile();
   });
 
 })();
