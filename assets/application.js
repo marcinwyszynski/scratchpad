@@ -4,7 +4,7 @@
     var month = '' + (date.getMonth() + 1);
     var day = '' + date.getUTCDate();
     if (month.length == 1) month = '0' + month;
-    if (day.length == 1) month = '0' + day;
+    if (day.length == 1) day = '0' + day;
     return [date.getFullYear(), month, day].join('-');
   };
 
